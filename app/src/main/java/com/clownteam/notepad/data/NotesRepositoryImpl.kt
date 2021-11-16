@@ -12,21 +12,33 @@ class NotesRepositoryImpl : NotesRepository {
         val notes = ArrayList<Note>()
 
         withContext(Dispatchers.IO) {
-            notes.addAll(AppDatabase.getInstance(NotesApplication.context).noteDao().getNotes())
+            notes.addAll(
+                AppDatabase.getInstance(NotesApplication.context).noteDao().getNotes()
+                    .map { it.toNote() }
+            )
         }
 
         return notes
     }
 
     override suspend fun insertNote(note: Note) {
-        TODO("Not yet implemented")
+        withContext(Dispatchers.IO) {
+            AppDatabase.getInstance(NotesApplication.context).noteDao()
+                .insertNote(NoteEntity.fromNote(note))
+        }
     }
 
     override suspend fun deleteNote(note: Note) {
-        TODO("Not yet implemented")
+        withContext(Dispatchers.IO) {
+            AppDatabase.getInstance(NotesApplication.context).noteDao()
+                .deleteNote(NoteEntity.fromNote(note))
+        }
     }
 
     override suspend fun updateNote(note: Note) {
-        TODO("Not yet implemented")
+        withContext(Dispatchers.IO) {
+            AppDatabase.getInstance(NotesApplication.context).noteDao()
+                .updateNote(NoteEntity.fromNote(note))
+        }
     }
 }

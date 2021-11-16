@@ -1,21 +1,19 @@
 package com.clownteam.notepad.data
 
-import android.provider.ContactsContract
 import androidx.room.*
-import com.clownteam.notepad.domain.model.Note
 
 @Dao
 interface NoteDao {
 
     @Query("SELECT * FROM NOTES")
-    fun getNotes(): List<Note>
+    fun getNotes(): List<NoteEntity>
 
     @Update
-    fun updateNote(note: Note)
+    fun updateNote(note: NoteEntity)
 
     @Insert
-    fun insertNote(note: Note)
+    fun insertNote(note: NoteEntity)
 
     @Delete
-    fun deleteNote(note: Note)
+    fun deleteNote(note: NoteEntity)
 }
