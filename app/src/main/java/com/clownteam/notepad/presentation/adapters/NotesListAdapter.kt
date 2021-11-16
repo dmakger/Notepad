@@ -11,6 +11,9 @@ class NotesListAdapter : RecyclerView.Adapter<NotesListAdapter.MyViewHolder>() {
 
     private val list = mutableListOf<Note>()
 
+    val lastItemIndex: Int
+        get() = list.lastIndex
+
     inner class MyViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.listitem_notes, parent, false)
     ){
@@ -32,5 +35,4 @@ class NotesListAdapter : RecyclerView.Adapter<NotesListAdapter.MyViewHolder>() {
         list.add(item)
         notifyItemInserted(list.size - 1)
     }
-
 }
