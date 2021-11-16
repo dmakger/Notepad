@@ -8,7 +8,18 @@ data class NoteEntity(
     val id: Int,
     val title: String,
     val content: String
-)
+) {
+    companion object {
+
+        fun fromNote(note: Note): NoteEntity {
+            return NoteEntity(
+                id = note.id,
+                title = note.title,
+                content = note.content
+            )
+        }
+    }
+}
 
 fun NoteEntity.toNote(): Note {
     return Note(
