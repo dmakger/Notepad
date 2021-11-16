@@ -23,9 +23,14 @@ class NotesListAdapter : RecyclerView.Adapter<NotesListAdapter.MyViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MyViewHolder(parent)
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(list[position])
     }
 
     override fun getItemCount() = list.size
+
+    fun addItem(item: Note) {
+        list.add(item)
+        notifyItemInserted(list.size - 1)
+    }
 
 }
