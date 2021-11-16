@@ -30,13 +30,23 @@ class NoteDetailedActivity : AppCompatActivity() {
     }
 
     private val repository: NotesRepository = NotesRepositoryImpl()
-
     private var id = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note_detailed)
 
         id = intent.getIntExtra(EXTRA_ID_NOTE_ITEM, 0)
+
+        var note: Note
+
+        if (id != 0) {
+            MainScope().launch {
+                note = repository.getNoteById(id)
+                etTitle.setText(note.title)
+                etDescription.setText(note.content)
+            }
+        }
     }
 
     /**
@@ -52,14 +62,8 @@ class NoteDetailedActivity : AppCompatActivity() {
      * Обрабатываем нажатие на кнопки меню menu_add_todo_item
      * */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        var note : Note? = null
-        if (id != 0) {
-            MainScope().launch {
-                note = repository.getNoteById(id)
-            }
-            etTitle.text = note!!.title
-        }
-        when(item.itemId) {
+        var note: Note? = null
+        when (item.itemId) {
             R.id.action_done -> {
                 if (etTitle.text.isNullOrEmpty()) {
                     Toast.makeText(this, "Please enter title", Toast.LENGTH_LONG).show()
@@ -67,18 +71,32 @@ class NoteDetailedActivity : AppCompatActivity() {
                 }
 
                 note = Note(
-                    0,
+                    id,
                     etTitle.text.toString(),
                     etDescription.text.toString(),
                     getCurrentDate()
                 )
+
                 MainScope().launch {
-                    repository.insertNote(note!!)
+                    if (id == 0) {
+                        repository.insertNote(note!!)
+                    } else {
+                        repository.updateNote(note!!)
+                    }
                 }
+
                 finish()
             }
+
             R.id.action_delete -> {
-                id
+                if (id != 0) {
+                    MainScope().launch {
+                        note = repository.getNoteById(id)
+
+                        repository.deleteNote(note!!)
+                    }
+                }
+                finish()
             }
         }
         return super.onOptionsItemSelected(item)

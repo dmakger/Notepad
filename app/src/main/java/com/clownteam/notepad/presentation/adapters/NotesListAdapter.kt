@@ -16,7 +16,6 @@ class NotesListAdapter(private val listener: Listener) :
         fun onItemClick(note: Note)
     }
 
-
     val lastItemIndex: Int
         get() = list.lastIndex
 
