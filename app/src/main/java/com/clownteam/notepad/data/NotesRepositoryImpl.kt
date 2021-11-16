@@ -21,6 +21,16 @@ class NotesRepositoryImpl : NotesRepository {
         return notes
     }
 
+    override suspend fun getNoteById(id: Int): Note {
+        val note: Note
+
+        withContext(Dispatchers.IO) {
+            note = AppDatabase.getInstance(NotesApplication.context).noteDao().getNoteById(id)
+        }
+
+        return note
+    }
+
     override suspend fun insertNote(note: Note) {
         withContext(Dispatchers.IO) {
             AppDatabase.getInstance(NotesApplication.context).noteDao()
